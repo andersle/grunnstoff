@@ -1,0 +1,2 @@
+# grunnstoff
+Grunnstoffenes periodesystem
