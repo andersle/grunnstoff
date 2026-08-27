@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hvorfor henger to atomer sammen?</title>
+<style>
+  :root{
+    --ground:#0B171C; --panel:#12252C; --line:#1E3A44;
+    --ink:#E6EEF0; --dim:#7A96A0;
+    --amber:#F0A868; --cool:#5FB5C4; --warn:#E2725B;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--ground);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:30px 22px 44px}
+
+  .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin:0 0 9px}
+  h1{margin:0;font-size:clamp(21px,3.2vw,36px);font-weight:300;letter-spacing:-.01em;line-height:1.15}
+  h1 em{font-style:normal;color:var(--amber)}
+  .lede{margin:11px 0 0;max-width:62ch;color:var(--dim);font-size:15px;line-height:1.6}
+
+  .split{display:grid;grid-template-columns:minmax(0,0.86fr) minmax(0,1.14fr);
+    gap:16px;margin-top:24px;align-items:stretch}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    display:flex;flex-direction:column;overflow:hidden}
+  .ptitle{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);
+    padding:14px 18px 0;margin:0}
+  .phint{font-size:12.5px;color:var(--dim);padding:5px 18px 0;margin:0}
+
+  .atoms{display:block;width:100%;flex:1;touch-action:none;cursor:ew-resize}
+  .atoms:focus-visible{outline:2px solid var(--amber);outline-offset:-3px}
+  .plot{display:block;width:100%;flex:1;touch-action:none;cursor:crosshair}
+
+  .status{border-top:1px solid var(--line);padding:15px 18px}
+  .status .big{font-size:20px;font-weight:400;color:var(--amber)}
+  .status .sub{margin-top:4px;font-size:13.5px;color:var(--dim);line-height:1.5}
+
+  .nums{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+  .nums div{padding:13px 18px}
+  .nums div+div{border-left:1px solid var(--line)}
+  .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+  .v{margin-top:4px;font-size:23px;font-weight:300;font-variant-numeric:tabular-nums}
+  .v small{font-size:13px;color:var(--dim);margin-left:3px}
+
+  .controls{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px;align-items:center}
+  button{font:inherit;font-size:13.5px;padding:9px 16px;border-radius:999px;
+    border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;
+    transition:border-color .15s,background .15s}
+  button:hover{border-color:var(--amber);background:rgba(240,168,104,.07)}
+  button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+  button.primary{background:var(--amber);color:#12252C;border-color:var(--amber);font-weight:500}
+  button.primary:hover{background:#F4B87E}
+
+  footer{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);
+    color:var(--dim);font-size:12.5px;line-height:1.65;max-width:76ch}
+  footer b{color:#A8C0C7;font-weight:500}
+
+  /* ---------- portrett / smal skjerm ---------- */
+  @media (max-width:860px){
+    .wrap{padding:18px 14px 32px}
+    .eyebrow{margin-bottom:6px}
+    .lede{display:none}
+    .split{grid-template-columns:1fr;gap:0;margin-top:14px}
+    .panel{border-radius:0;border-bottom:0}
+    .panel:first-child{border-radius:12px 12px 0 0}
+    .panel:last-child{border-radius:0 0 12px 12px;border-bottom:1px solid var(--line)}
+    .ptitle{padding:10px 14px 0}
+    .phint{padding:3px 14px 0;font-size:12px}
+    .status{padding:11px 14px}
+    .status .big{font-size:17px}
+    .status .sub{font-size:12.5px;margin-top:2px}
+    .nums div{padding:10px 14px}
+    .v{font-size:20px}
+    .controls{gap:7px;margin-top:14px}
+    button{font-size:13px;padding:8px 13px}
+    footer{margin-top:20px;font-size:12px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Hydrogen &middot; H<sub>2</sub></p>
+  <h1>Hvorfor henger to atomer <em>sammen?</em></h1>
+  <p class="lede">Flytt atomene og se hva som skjer med energien. Kreftene mellom atomene
+     driver dem mot avstanden der energien er lavest. N&aring;r de er der, sier vi at atomene
+     er bundet.</p>
+
+  <div class="split">
+
+    <div class="panel">
+      <p class="ptitle">Atomene</p>
+      <p class="phint">Dra atomene, eller bruk piltastene.</p>
+      <svg class="atoms" id="atoms" viewBox="0 0 440 300" preserveAspectRatio="xMidYMid meet"
+           role="application" tabindex="0"
+           aria-label="To hydrogenatomer. Bruk piltastene for aa endre avstanden."
+           xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="atomFill" cx="35%" cy="30%">
+            <stop offset="0%" stop-color="#FDFDFD"/>
+            <stop offset="55%" stop-color="#D5E2E6"/>
+            <stop offset="100%" stop-color="#93AAB2"/>
+          </radialGradient>
+          <marker id="tip" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M1 1 L9 5 L1 9 Z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <g id="forceA" color="#E2725B"></g>
+        <g id="forceB" color="#E2725B"></g>
+        <circle id="atomA" cx="165" cy="130" r="24" fill="url(#atomFill)"/>
+        <circle id="atomB" cx="275" cy="130" r="24" fill="url(#atomFill)"/>
+        <line id="ruler" x1="165" y1="196" x2="275" y2="196" stroke="#5FB5C4"
+              stroke-width="1" stroke-dasharray="4 4"/>
+        <line id="tickA" x1="165" y1="190" x2="165" y2="202" stroke="#5FB5C4" stroke-width="1"/>
+        <line id="tickB" x1="275" y1="190" x2="275" y2="202" stroke="#5FB5C4" stroke-width="1"/>
+        <text id="rulerTxt" x="220" y="219" text-anchor="middle" fill="#5FB5C4"
+              font-size="13" font-family="inherit">74 pm</text>
+      </svg>
+
+      <div class="status">
+        <div class="big" id="statusBig">Akkurat passe</div>
+        <div class="sub" id="statusSub">Ingen netto kraft. Her er energien lavest, og det er her atomene blir v&aelig;rende.</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="ptitle">Energien til de to atomene til sammen</p>
+      <svg class="plot" id="plot" viewBox="0 0 560 400" preserveAspectRatio="xMidYMid meet"
+           role="img" aria-label="Energikurve som funksjon av avstanden mellom atomene."
+           xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="axis" viewBox="0 0 10 10" refX="6" refY="5"
+                  markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M1 1 L8 5 L1 9 Z" fill="#6E8E99"/>
+          </marker>
+          <linearGradient id="under" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#F0A868" stop-opacity=".15"/>
+            <stop offset="100%" stop-color="#F0A868" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <g id="grid"></g>
+        <path id="fill" fill="url(#under)"/>
+        <path id="curve" fill="none" stroke="#F0A868" stroke-width="2.5" stroke-linejoin="round"/>
+        <g id="notes"></g>
+        <line id="drop" stroke="#5FB5C4" stroke-width="1" stroke-dasharray="3 3"/>
+        <circle id="marker" r="6.5" fill="#5FB5C4" stroke="#12252C" stroke-width="2.5"/>
+      </svg>
+
+      <div class="nums">
+        <div>
+          <div class="k">Avstand</div>
+          <div class="v" id="rV">74<small>pm</small></div>
+        </div>
+        <div>
+          <div class="k">Energi</div>
+          <div class="v" id="eV">&minus;436<small>kJ/mol</small></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="controls">
+    <button class="primary" id="release">Slipp atomene</button>
+    <button data-r="45">For n&aelig;r</button>
+    <button data-r="74">Bindingslengde</button>
+    <button data-r="200">For langt unna</button>
+    <button id="toggleNotes" aria-pressed="true">Skjul forklaringer</button>
+  </div>
+
+  <footer>
+    <b>Om modellen:</b> kurven gjelder H<sub>2</sub>, med bindingslengde 74 pm og
+    bindingsenergi 436 kJ/mol, alts&aring; energien som skal til for &aring; rive de to atomene
+    fra hverandre. Nullpunktet er satt der atomene er s&aring; langt fra hverandre at de ikke
+    merker hverandre. <b>Merk:</b> atomene st&aring;r aldri stille. De har alltid litt
+    bevegelsesenergi, og svinger fram og tilbake om likevektsavstanden.
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var De = 436, re = 74, alpha = 0.0194;
+  var R_MIN = 35, R_MAX = 220, E_TOP = 260, E_BOT = -545;
+
+  function V(r){ var u = Math.exp(-alpha*(r-re)); return De*(1-u)*(1-u) - De; }
+  function dV(r){ var u = Math.exp(-alpha*(r-re)); return 2*De*alpha*(1-u)*u; }
+
+  function el(id){ return document.getElementById(id); }
+  var atomsSvg = el("atoms"), plotSvg = el("plot");
+  var atomA = el("atomA"), atomB = el("atomB");
+  var ruler = el("ruler"), tickA = el("tickA"), tickB = el("tickB"), rulerTxt = el("rulerTxt");
+  var forceA = el("forceA"), forceB = el("forceB");
+  var curve = el("curve"), fillPath = el("fill"), marker = el("marker"), drop = el("drop");
+  var notes = el("notes"), grid = el("grid");
+
+  /* to oppsett: bred (to kolonner) og smal (portrett) */
+  var WIDE = {W:560, H:400, PL:82, PR:30, PT:26, PB:62,
+              yT:[-400,-300,-200,-100,0,100,200], xT:[50,75,100,125,150,175,200],
+              xL:[50,100,150,200], fs:12, ttl:13, note:12, zero:11,
+              aH:300, aY:130, aR:24, aScale:1.5, aRulY:196, aTxtY:219};
+  var NARROW = {W:340, H:290, PL:50, PR:14, PT:18, PB:50,
+                yT:[-400,-200,0,200], xT:[50,100,150,200],
+                xL:[50,150], fs:11, ttl:11.5, note:10.5, zero:9.5,
+                aH:150, aY:62, aR:17, aScale:1.0, aRulY:104, aTxtY:125};
+  var g = WIDE;
+
+  function X(r){ return g.PL + (r-R_MIN)/(R_MAX-R_MIN)*(g.W-g.PL-g.PR); }
+  function Y(e){ return g.PT + (E_TOP-e)/(E_TOP-E_BOT)*(g.H-g.PT-g.PB); }
+  function rFromX(x){ return R_MIN + (x-g.PL)/(g.W-g.PL-g.PR)*(R_MAX-R_MIN); }
+
+  var FMAX = Math.abs(dV(R_MIN));   // sterkeste kraft innenfor omraadet vi viser
+  var CX, r = re, v = 0, running = false, showNotes = true, raf = null;
+
+  function add(parent, name, attrs, text){
+    var n = document.createElementNS("http://www.w3.org/2000/svg", name);
+    for(var k in attrs) n.setAttribute(k, attrs[k]);
+    if(text != null) n.textContent = text;
+    parent.appendChild(n); return n;
+  }
+  function clear(node){ while(node.firstChild) node.removeChild(node.firstChild); }
+  function nb(x){ return String(Math.round(x)).replace("-", "\u2212"); }
+
+  function buildPlot(){
+    clear(grid); clear(notes);
+    var X0 = g.PL, Y0 = g.H - g.PB;
+
+    g.yT.forEach(function(e){
+      add(grid, "line", {x1:X0, y1:Y(e), x2:g.W-g.PR, y2:Y(e), stroke:"#18313A", "stroke-width":1});
+    });
+    add(grid, "line", {x1:X0, y1:g.PT-6, x2:X0, y2:Y0,
+      stroke:"#6E8E99", "stroke-width":1.6, "marker-start":"url(#axis)"});
+    add(grid, "line", {x1:X0, y1:Y0, x2:g.W-g.PR+6, y2:Y0,
+      stroke:"#6E8E99", "stroke-width":1.6, "marker-end":"url(#axis)"});
+
+    g.yT.forEach(function(e){
+      add(grid, "line", {x1:X0-6, y1:Y(e), x2:X0, y2:Y(e), stroke:"#6E8E99", "stroke-width":1.4});
+      add(grid, "text", {x:X0-10, y:Y(e)+4, "text-anchor":"end", fill:"#A8C0C7",
+        "font-size":g.fs, "font-family":"inherit"}, nb(e));
+    });
+    g.xT.forEach(function(rr){
+      var major = g.xL.indexOf(rr) >= 0;
+      add(grid, "line", {x1:X(rr), y1:Y0, x2:X(rr), y2:Y0 + (major ? 7 : 4),
+        stroke:"#6E8E99", "stroke-width":1.4});
+      if(major) add(grid, "text", {x:X(rr), y:Y0+20, "text-anchor":"middle",
+        fill:"#A8C0C7", "font-size":g.fs, "font-family":"inherit"}, rr);
+    });
+
+    var cy = (g.PT+Y0)/2;
+    add(grid, "text", {x:16, y:cy, fill:"#E6EEF0", "font-size":g.ttl, "font-family":"inherit",
+      "text-anchor":"middle", transform:"rotate(-90 16 " + cy + ")"}, "Energi  (kJ/mol)");
+    add(grid, "text", {x:(X0+g.W-g.PR)/2, y:Y0+40, "text-anchor":"middle", fill:"#E6EEF0",
+      "font-size":g.ttl, "font-family":"inherit"}, "Avstand mellom atomene  (pm)");
+
+    add(grid, "line", {x1:X0, y1:Y(0), x2:g.W-g.PR, y2:Y(0),
+      stroke:"#4A6D78", "stroke-width":1.2, "stroke-dasharray":"6 4"});
+    add(grid, "text", {x:g.W-g.PR-2, y:Y(0)-7, "text-anchor":"end", fill:"#7A96A0",
+      "font-size":g.zero, "font-family":"inherit"},
+      g === WIDE ? "0 = atomene merker ikke hverandre" : "0 = helt fra hverandre");
+
+    var d = "";
+    for(var rr = R_MIN; rr <= R_MAX + 0.01; rr += 0.5){
+      d += (d ? "L" : "M") + X(rr).toFixed(1) + " " + Y(Math.min(V(rr), E_TOP+60)).toFixed(1);
+    }
+    curve.setAttribute("d", d);
+
+    var f = "";
+    for(var rf = R_MIN; rf <= R_MAX + 0.01; rf += 0.5){
+      var yf = Math.max(Y(V(rf)), Y(0));      // aldri hoyere enn nullinjen
+      f += (f ? "L" : "M") + X(rf).toFixed(1) + " " + yf.toFixed(1);
+    }
+    fillPath.setAttribute("d", f + "L" + X(R_MAX).toFixed(1) + " " + Y(0).toFixed(1) +
+      "L" + X(R_MIN).toFixed(1) + " " + Y(0).toFixed(1) + "Z");
+
+    add(notes, "line", {x1:X(re), y1:Y(-De), x2:X(re), y2:Y(0),
+      stroke:"#C99263", "stroke-width":1.2, "stroke-dasharray":"4 4"});
+    add(notes, "line", {x1:X(re), y1:Y(-De), x2:X(re)+(g===WIDE?112:78), y2:Y(-De),
+      stroke:"#C99263", "stroke-width":1.2, "stroke-dasharray":"4 4"});
+    add(notes, "text", {x:X(re)+9, y:Y(-De/2)-3, fill:"#E0A878",
+      "font-size":g.note, "font-family":"inherit"}, "bindingsenergi");
+    add(notes, "text", {x:X(re)+9, y:Y(-De/2)+12, fill:"#E0A878",
+      "font-size":g.note, "font-family":"inherit"}, "436 kJ/mol");
+    add(notes, "text", {x:X(re), y:Y(-De)+21, "text-anchor":"middle", fill:"#E0A878",
+      "font-size":g.note, "font-family":"inherit"}, "74 pm");
+    add(notes, "text", {x:X(41), y:Y(155), fill:"#E2725B",
+      "font-size":g.note, "font-family":"inherit"}, "for n\u00e6r");
+    add(notes, "text", {x:X(g===WIDE?136:128), y:Y(-100), fill:"#7FC4D1",
+      "font-size":g.note, "font-family":"inherit"}, "for langt unna");
+
+    notes.style.display = showNotes ? "" : "none";
+  }
+
+  var inited = false;
+  function applyLayout(){
+    var next = window.innerWidth <= 860 ? NARROW : WIDE;
+    if(inited && next === g) return;
+    inited = true;
+    g = next;
+    CX = 220 * (g === WIDE ? 1 : 340/440);
+    plotSvg.setAttribute("viewBox", "0 0 " + g.W + " " + g.H);
+    atomsSvg.setAttribute("viewBox", "0 0 " + (g === WIDE ? 440 : 340) + " " + g.aH);
+    atomA.setAttribute("r", g.aR); atomB.setAttribute("r", g.aR);
+    atomA.setAttribute("cy", g.aY); atomB.setAttribute("cy", g.aY);
+    [ruler, tickA, tickB].forEach(function(n){
+      n.setAttribute("y1", n === ruler ? g.aRulY : g.aRulY - 6);
+      n.setAttribute("y2", n === ruler ? g.aRulY : g.aRulY + 6);
+    });
+    rulerTxt.setAttribute("y", g.aTxtY);
+    rulerTxt.setAttribute("font-size", g === WIDE ? 13 : 11.5);
+    buildPlot();
+    draw();
+    reserveHeight();
+  }
+
+  function arrow(gr, x, dir, mag){
+    clear(gr);
+    if(mag <= 0) return;
+    var len = (g === WIDE ? 10 : 8) + mag * (g === WIDE ? 52 : 34);
+    add(gr, "line", {x1:x, y1:g.aY, x2:x + dir*len, y2:g.aY,
+      stroke:"currentColor", "stroke-width": g === WIDE ? 3.5 : 3, "stroke-linecap":"round",
+      "marker-end":"url(#tip)"});
+  }
+
+  function draw(){
+    var e = V(r), grad = dV(r);
+    var sep = r * g.aScale, xa = CX - sep/2, xb = CX + sep/2;
+
+    atomA.setAttribute("cx", xa.toFixed(1));
+    atomB.setAttribute("cx", xb.toFixed(1));
+    ruler.setAttribute("x1", xa); ruler.setAttribute("x2", xb);
+    tickA.setAttribute("x1", xa); tickA.setAttribute("x2", xa);
+    tickB.setAttribute("x1", xb); tickB.setAttribute("x2", xb);
+    rulerTxt.setAttribute("x", CX);
+    rulerTxt.textContent = Math.round(r) + " pm";
+
+    var atEq = Math.abs(r - re) < 2;
+    var norm = atEq ? 0 : Math.sqrt(Math.min(Math.abs(grad) / FMAX, 1));
+    var attract = grad > 0;
+    var col = attract ? "#5FB5C4" : "#E2725B";
+    forceA.setAttribute("color", col); forceB.setAttribute("color", col);
+    arrow(forceA, xa + (attract ? g.aR + 5 : -(g.aR + 5)), attract ? 1 : -1, norm);
+    arrow(forceB, xb + (attract ? -(g.aR + 5) : g.aR + 5), attract ? -1 : 1, norm);
+
+    marker.setAttribute("cx", X(r)); marker.setAttribute("cy", Y(e));
+    drop.setAttribute("x1", X(r)); drop.setAttribute("y1", Y(e));
+    drop.setAttribute("x2", X(r)); drop.setAttribute("y2", g.H - g.PB);
+
+    el("rV").innerHTML = Math.round(r) + '<small>pm</small>';
+    el("eV").innerHTML = nb(e) + '<small>kJ/mol</small>';
+
+    var big = el("statusBig"), sub = el("statusSub"), key;
+    if(atEq) key = "passe";
+    else if(!attract) key = "naer";
+    else if(e < -20) key = "unna";
+    else key = "fri";
+    big.textContent = STATUS[key][0];
+    big.style.color = STATUS[key][1];
+    sub.textContent = STATUS[key][2];
+  }
+
+  var STATUS = {
+    passe: ["Akkurat passe", "#F0A868",
+      "Ingen netto kraft. Her er energien lavest, og det er her atomene blir v\u00e6rende."],
+    naer: ["For n\u00e6r", "#E2725B",
+      "Kjernene og elektronskyene kommer i veien for hverandre, og atomene skyves fra hverandre."],
+    unna: ["For langt unna", "#5FB5C4",
+      "Atomene trekkes mot hverandre. De er fortsatt bundet, siden energien er lavere enn null."],
+    fri: ["Nesten fri", "#5FB5C4",
+      "S\u00e5 langt fra hverandre at de nesten ikke merker hverandre. Energien n\u00e6rmer seg null."]
+  };
+
+  /* setter av plass til den lengste statusteksten, slik at ingenting hopper */
+  function reserveHeight(){
+    var sub = el("statusSub"), keep = sub.textContent, max = 0;
+    sub.style.height = "auto";
+    for(var k in STATUS){
+      sub.textContent = STATUS[k][2];
+      if(sub.scrollHeight > max) max = sub.scrollHeight;
+    }
+    sub.textContent = keep;
+    sub.style.height = max + "px";
+  }
+
+  function setR(nr){
+    if(typeof nr !== "number" || !isFinite(nr)) return;
+    r = Math.max(R_MIN, Math.min(R_MAX, nr));
+    draw();
+  }
+
+  function dragFrom(svg, mapper, grab){
+    var active = false;
+    function px(ev){
+      var box = svg.getBoundingClientRect();
+      var cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
+      var vbW = parseFloat(svg.getAttribute("viewBox").split(" ")[2]);
+      return (cx - box.left) / box.width * vbW;
+    }
+    function down(ev){
+      var x = px(ev);
+      if(grab && !grab(x)) return;
+      active = true; running = false; ev.preventDefault(); setR(mapper(x));
+    }
+    function move(ev){ if(!active) return; ev.preventDefault(); setR(mapper(px(ev))); }
+    function up(){ active = false; }
+    svg.addEventListener("mousedown", down);
+    svg.addEventListener("touchstart", down, {passive:false});
+    window.addEventListener("mousemove", move);
+    window.addEventListener("touchmove", move, {passive:false});
+    window.addEventListener("mouseup", up);
+    window.addEventListener("touchend", up);
+  }
+  dragFrom(atomsSvg, function(x){ return Math.abs(x - CX) * 2 / g.aScale; },
+    function(x){                       // start bare dragging naar man tar tak i et atom
+      var half = r * g.aScale / 2;
+      return Math.abs(Math.abs(x - CX) - half) < g.aR + 14;
+    });
+  dragFrom(plotSvg, function(x){ return rFromX(x); });
+
+  atomsSvg.addEventListener("keydown", function(ev){
+    var step = ev.shiftKey ? 10 : 2;
+    if(ev.key === "ArrowRight"){ running = false; setR(r + step); ev.preventDefault(); }
+    if(ev.key === "ArrowLeft"){ running = false; setR(r - step); ev.preventDefault(); }
+  });
+
+  var last = 0;
+  function tick(now){
+    if(!running){ raf = null; return; }
+    var dt = Math.min((now - last)/1000, 0.033);
+    last = now;
+    v += dV(r) * -120 * dt;
+    v *= Math.pow(0.99, dt*60);
+    r += v * dt;
+    if(r < R_MIN){ r = R_MIN; v = Math.abs(v)*0.5; }
+    if(r > R_MAX){ r = R_MAX; v = -Math.abs(v)*0.5; }
+    draw();
+    if(Math.abs(v) < 0.4 && Math.abs(r-re) < 0.4){ running = false; r = re; draw(); }
+    raf = running ? requestAnimationFrame(tick) : null;
+  }
+  el("release").addEventListener("click", function(){
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){ setR(re); return; }
+    if(Math.abs(r - re) < 2) setR(180);
+    v = 0; running = true; last = performance.now();
+    if(!raf) raf = requestAnimationFrame(tick);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("button[data-r]"), function(b){
+    b.addEventListener("click", function(){
+      running = false; v = 0; setR(parseFloat(b.getAttribute("data-r")));
+    });
+  });
+  el("toggleNotes").addEventListener("click", function(){
+    showNotes = !showNotes;
+    notes.style.display = showNotes ? "" : "none";
+    this.textContent = showNotes ? "Skjul forklaringer" : "Vis forklaringer";
+    this.setAttribute("aria-pressed", String(showNotes));
+  });
+
+  var rt = null;
+  window.addEventListener("resize", function(){
+    clearTimeout(rt); rt = setTimeout(function(){ applyLayout(); reserveHeight(); }, 120);
+  });
+
+  applyLayout();
+})();
+</script>
+</body>
+</html>
