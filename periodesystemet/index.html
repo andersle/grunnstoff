@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Finn fram i periodesystemet</title>
+<style>
+:root{--ground:#0b171c;--panel:#12252c;--line:#1e3a44;--ink:#e6eef0;--dim:#7f9aa4;--amber:#f0a868;--cool:#5fb5c4;--bad:#e2725b}*{box-sizing:border-box}html,body{margin:0;background:var(--ground);color:var(--ink);font-family:system-ui,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.wrap{max-width:1280px;margin:auto;padding:30px 22px 44px}.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin:0 0 9px}h1{margin:0;font-size:clamp(24px,3.4vw,39px);font-weight:300;line-height:1.15}h1 em{font-style:normal;color:var(--amber)}.lede{margin:11px 0 0;max-width:70ch;color:var(--dim);font-size:15px;line-height:1.6}.search{display:flex;gap:9px;margin-top:22px;max-width:620px}.search input{min-width:0;flex:1;background:var(--panel);border:1px solid var(--line);border-radius:10px;color:var(--ink);font:inherit;padding:11px 13px}.search input:focus{outline:2px solid var(--cool);border-color:transparent}.search button{background:var(--amber);border-color:var(--amber);color:var(--ground);font-weight:650}.message{min-height:23px;margin:7px 0 0;color:var(--dim);font-size:13px}.message.bad{color:var(--bad)}button{font:inherit;color:var(--ink);background:transparent;border:1px solid var(--line);cursor:pointer}.layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:16px;margin-top:15px;align-items:start}.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px}.ptitle{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);padding:14px 18px 0;margin:0}.phint{font-size:12.5px;color:var(--dim);padding:5px 18px 13px;margin:0}.table-scroll{overflow-x:auto;padding:0 12px 15px}.periodic{display:grid;grid-template-columns:32px repeat(18,minmax(43px,1fr));grid-template-rows:24px repeat(7,55px) 14px repeat(2,55px);gap:4px;min-width:900px}.axis{display:grid;place-items:center;color:var(--dim);font-size:10px}.series-label{display:flex;align-items:center;color:var(--dim);font-size:9px;line-height:1.1}.element{position:relative;border-radius:7px;padding:5px 4px;text-align:left;min-width:0;background:#0e2026;border-color:#294954}.element:hover,.element:focus-visible{border-color:var(--amber);outline:none;z-index:2}.element[aria-pressed=true]{background:var(--amber);border-color:var(--amber);color:var(--ground);box-shadow:0 0 0 2px #0b171c,0 0 0 4px var(--amber)}.element .z{display:block;font-size:9px;line-height:1;color:var(--dim)}.element[aria-pressed=true] .z{color:#38515a}.element .sym{display:block;font-size:18px;font-weight:650;line-height:1.3}.details{overflow:hidden}.identity{padding:18px}.symbol{display:grid;place-items:center;width:106px;height:106px;border:1px solid var(--amber);border-radius:12px;color:var(--amber);font-size:48px;font-weight:650}.number{font-size:12px;color:var(--dim);margin-top:14px}.name{font-size:27px;font-weight:350;margin:2px 0 0}.facts{margin:17px 0 0;border-top:1px solid var(--line)}.fact{display:flex;justify-content:space-between;gap:12px;padding:12px 18px}.fact+.fact{border-top:1px solid var(--line)}.fact span{color:var(--dim)}.fact strong{font-weight:600;color:var(--ink)}.connection{margin-top:16px;padding:17px 18px;color:var(--dim);line-height:1.55}.connection strong{color:var(--ink)}footer{margin-top:23px;padding-top:15px;border-top:1px solid var(--line);color:var(--dim);font-size:12px;max-width:82ch}footer b{color:#abc0c7;font-weight:550}@media(max-width:820px){.wrap{padding:19px 14px 34px}.lede{display:none}.layout{grid-template-columns:1fr}.details{display:grid;grid-template-columns:auto 1fr}.identity{display:flex;gap:15px;align-items:center}.symbol{width:82px;height:82px;font-size:38px;flex:none}.number{margin-top:0}.facts{margin:0;border-top:0;border-left:1px solid var(--line)}}@media(max-width:520px){.search{flex-direction:column}.search button{padding:10px}.details{display:block}.facts{border-left:0;border-top:1px solid var(--line)}.periodic{grid-template-columns:28px repeat(18,42px)}}
+/* Forenklet stofftype fra elements.json */
+.legend{display:flex;gap:8px;flex-wrap:wrap;padding:0 18px 13px}.legend button{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;color:var(--ink);font-size:12px}.legend button:hover,.legend button:focus-visible{border-color:var(--amber);outline:2px solid transparent}.legend button[aria-pressed=true]{border-color:var(--amber);box-shadow:0 0 0 1px var(--amber)}.swatch{width:11px;height:11px;border-radius:3px}.swatch.metal{background:#326d78}.swatch.metalloid{background:#9b683e}.swatch.nonmetal{background:#39755e}.swatch.unknown{background:#59616f}.element.metal{background:#234b54;border-color:#326d78}.element.metalloid{background:#5a3d28;border-color:#9b683e}.element.nonmetal{background:#244d3e;border-color:#39755e}.element.unknown{background:#343943;border-color:#59616f}.element.muted{opacity:.18}.element{transition:opacity .15s,border-color .15s,background .15s}.element[aria-pressed=true]{background:var(--amber);border-color:var(--amber)}.element.metal .z,.element.metalloid .z,.element.nonmetal .z,.element.unknown .z{color:#b7c9ce}
+.layout-choice{display:flex;gap:8px;flex-wrap:wrap;padding:0 18px 13px}.layout-choice button{padding:7px 11px;border-radius:999px;font-size:12px}.layout-choice button:hover,.layout-choice button:focus-visible{border-color:var(--amber);outline:none}.layout-choice button[aria-pressed=true]{background:var(--amber);border-color:var(--amber);color:var(--ground)}.periodic.expanded{grid-template-columns:32px repeat(32,minmax(43px,1fr));grid-template-rows:24px repeat(7,55px);min-width:1510px}.periodic.expanded .series-label{display:none}
+.wrap.table-wide{max-width:1840px}.wrap{transition:max-width .25s ease}
+.element.aggregate{padding-left:2px;padding-right:2px}.element.aggregate .sym{font-size:11px;letter-spacing:-.03em;white-space:nowrap}
+.symbol.aggregate-display{font-size:23px;letter-spacing:-.04em}
+.view-choice{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 18px 10px;color:var(--dim);font-size:12px}.view-choice button{padding:6px 10px;border-radius:999px;font-size:12px}.view-choice button[aria-pressed=true]{background:var(--amber);border-color:var(--amber);color:var(--ground)}.view-choice button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}.legend[hidden]{display:none}.swatch.h-bce{background:#7d5f91}.swatch.h-1{background:#596f9a}.swatch.h-1600{background:#367184}.swatch.h-1800{background:#39755e}.swatch.h-1850{background:#77743d}.swatch.h-1950{background:#95673f}.swatch.h-2000{background:#8b4f52}.history-view .element.h-bce{background:#493955;border-color:#7d5f91}.history-view .element.h-1{background:#34415c;border-color:#596f9a}.history-view .element.h-1600{background:#234b57;border-color:#367184}.history-view .element.h-1800{background:#244d3e;border-color:#39755e}.history-view .element.h-1850{background:#4b4929;border-color:#77743d}.history-view .element.h-1950{background:#583e2a;border-color:#95673f}.history-view .element.h-2000{background:#523135;border-color:#8b4f52}
+.history-view .element.h-varies{background:#343943;border-color:#59616f}.history-view .element[aria-pressed=true]{background:var(--amber);border-color:var(--amber)}
+.swatch.stable{background:#39755e}.swatch.no-stable{background:#8b4f52}.stability-view .element.stable{background:#244d3e;border-color:#39755e}.stability-view .element.no-stable{background:#523135;border-color:#8b4f52}.stability-view .element.stability-varies{background:#343943;border-color:#59616f}.stability-view .element[aria-pressed=true]{background:var(--amber);border-color:var(--amber)}
+</style>
+</head>
+<body><main class="wrap" id="page">
+<p class="eyebrow">Kapittel 2 · Atomer og grunnstoffer</p>
+<h1>Hvordan finner du et grunnstoff i <em>periodesystemet?</em></h1>
+<p class="lede">Søk med navn, symbol eller atomnummer. Se hvordan tre ulike kjennetegn fører til samme plass i periodesystemet.</p>
+<form class="search" id="searchForm" role="search"><label for="query" class="visually-hidden">Navn, symbol eller atomnummer</label><input id="query" autocomplete="off" placeholder="Prøv for eksempel oksygen, O eller 8" aria-describedby="message"><button type="submit">Finn grunnstoff</button></form>
+<p class="message" id="message" aria-live="polite">Du kan også velge et grunnstoff direkte i tabellen.</p>
+<div class="layout">
+<section class="panel"><p class="ptitle">Periodesystemet</p><p class="phint">Kolonnene er grupper. Radene er perioder. Velg en kategori for å fremheve den.</p><div class="view-choice" role="group" aria-label="Velg hva fargene skal vise"><span>Farge etter</span><button type="button" data-view="type" aria-pressed="true">stofftype</button><button type="button" data-view="history" aria-pressed="false">historisk periode</button><button type="button" data-view="stability" aria-pressed="false">stabile isotoper</button></div><div class="legend" id="typeLegend" role="group" aria-label="Fremhev en forenklet stofftype"><button type="button" data-category="metal" aria-pressed="false"><i class="swatch metal"></i>metaller</button><button type="button" data-category="metalloid" aria-pressed="false"><i class="swatch metalloid"></i>halvmetaller</button><button type="button" data-category="nonmetal" aria-pressed="false"><i class="swatch nonmetal"></i>ikke-metaller</button><button type="button" data-category="unknown" aria-pressed="false"><i class="swatch unknown"></i>ikke tilstrekkelig karakterisert</button></div><div class="legend" id="historyLegend" role="group" aria-label="Fremhev en historisk periode" hidden><button type="button" data-category="h-bce" aria-pressed="false"><i class="swatch h-bce"></i>før vår tidsregning</button><button type="button" data-category="h-1" aria-pressed="false"><i class="swatch h-1"></i>1–1599</button><button type="button" data-category="h-1600" aria-pressed="false"><i class="swatch h-1600"></i>1600–1799</button><button type="button" data-category="h-1800" aria-pressed="false"><i class="swatch h-1800"></i>1800–1849</button><button type="button" data-category="h-1850" aria-pressed="false"><i class="swatch h-1850"></i>1850–1949</button><button type="button" data-category="h-1950" aria-pressed="false"><i class="swatch h-1950"></i>1950–1999</button><button type="button" data-category="h-2000" aria-pressed="false"><i class="swatch h-2000"></i>2000–i dag</button></div><div class="legend" id="stabilityLegend" role="group" aria-label="Fremhev grunnstoffer etter stabile isotoper" hidden><button type="button" data-category="stable" aria-pressed="false"><i class="swatch stable"></i>minst én stabil isotop</button><button type="button" data-category="no-stable" aria-pressed="false"><i class="swatch no-stable"></i>ingen stabile isotoper</button></div><div class="layout-choice"><button type="button" id="layoutToggle" aria-pressed="false">Sett de to radene inn i tabellen</button></div><div class="table-scroll" id="tableScroll" tabindex="0" aria-label="Periodesystemet kan rulles vannrett"><div class="periodic" id="periodic" aria-label="Grunnstoffene i periodesystemet"></div></div></section>
+<aside class="panel details" aria-live="polite"><div class="identity"><div class="symbol" id="symbol">O</div><div><div class="number" id="number">Atomnummer 8</div><p class="name" id="name">Oksygen</p></div></div><div class="facts"><div class="fact"><span>Symbol</span><strong id="symbolFact">O</strong></div><div class="fact"><span>Atommasse</span><strong id="massFact">15,999 u</strong></div><div class="fact"><span>Gruppe</span><strong id="groupFact">16</strong></div><div class="fact"><span>Periode</span><strong id="periodFact">2</strong></div><div class="fact"><span>Forenklet type</span><strong id="categoryFact">Ikke-metall</strong></div><div class="fact"><span>Stabile isotoper</span><strong id="stabilityFact">Minst én</strong></div><div class="fact"><span>Historisk datering</span><strong id="historyFact">1774</strong></div><div class="fact"><span>Historisk periode</span><strong id="historyPeriodFact">1600–1799</strong></div></div></aside>
+</div>
+<section class="panel connection"><strong>Se sammenhengen:</strong> Atomnummeret er grunnstoffets faste nummer og er lik antallet protoner i kjernen. Gruppe er den loddrette kolonnen, og periode er den vannrette raden.</section>
+<footer><b>Om modellen:</b> Dette er et kart for å finne grunnstoffene. Stofftype, status, atommasse og opplysningen om stabile isotoper kommer fra prosjektets <code>elements.json</code>. «Ingen stabile isotoper» betyr ikke at grunnstoffet ikke finnes naturlig; noen radioaktive isotoper er svært langlivede. Historiske år kommer fra Python-pakken <code>mendeleev</code>; tidligste dokumenterte bruk er brukt for eldre grunnstoffer uten år, og for platina. Historiske dateringer er kildevalg, ikke alltid ett entydig oppdagelsesøyeblikk.</footer>
+</main>
+<script>
+(()=>{'use strict';
+const raw=`1|H|hydrogen|1|1
+2|He|helium|18|1
+3|Li|litium|1|2
+4|Be|beryllium|2|2
+5|B|bor|13|2
+6|C|karbon|14|2
+7|N|nitrogen|15|2
+8|O|oksygen|16|2
+9|F|fluor|17|2
+10|Ne|neon|18|2
+11|Na|natrium|1|3
+12|Mg|magnesium|2|3
+13|Al|aluminium|13|3
+14|Si|silisium|14|3
+15|P|fosfor|15|3
+16|S|svovel|16|3
+17|Cl|klor|17|3
+18|Ar|argon|18|3
+19|K|kalium|1|4
+20|Ca|kalsium|2|4
+21|Sc|scandium|3|4
+22|Ti|titan|4|4
+23|V|vanadium|5|4
+24|Cr|krom|6|4
+25|Mn|mangan|7|4
+26|Fe|jern|8|4
+27|Co|kobolt|9|4
+28|Ni|nikkel|10|4
+29|Cu|kobber|11|4
+30|Zn|sink|12|4
+31|Ga|gallium|13|4
+32|Ge|germanium|14|4
+33|As|arsen|15|4
+34|Se|selen|16|4
+35|Br|brom|17|4
+36|Kr|krypton|18|4
+37|Rb|rubidium|1|5
+38|Sr|strontium|2|5
+39|Y|yttrium|3|5
+40|Zr|zirkonium|4|5
+41|Nb|niob|5|5
+42|Mo|molybden|6|5
+43|Tc|technetium|7|5
+44|Ru|ruthenium|8|5
+45|Rh|rhodium|9|5
+46|Pd|palladium|10|5
+47|Ag|sølv|11|5
+48|Cd|kadmium|12|5
+49|In|indium|13|5
+50|Sn|tinn|14|5
+51|Sb|antimon|15|5
+52|Te|tellur|16|5
+53|I|jod|17|5
+54|Xe|xenon|18|5
+55|Cs|cesium|1|6
+56|Ba|barium|2|6
+57–71|La–Lu|lantanoidene|3|6
+72|Hf|hafnium|4|6
+73|Ta|tantal|5|6
+74|W|wolfram|6|6
+75|Re|rhenium|7|6
+76|Os|osmium|8|6
+77|Ir|iridium|9|6
+78|Pt|platina|10|6
+79|Au|gull|11|6
+80|Hg|kvikksølv|12|6
+81|Tl|thallium|13|6
+82|Pb|bly|14|6
+83|Bi|vismut|15|6
+84|Po|polonium|16|6
+85|At|astat|17|6
+86|Rn|radon|18|6
+87|Fr|francium|1|7
+88|Ra|radium|2|7
+89–103|Ac–Lr|actinoidene|3|7
+104|Rf|rutherfordium|4|7
+105|Db|dubnium|5|7
+106|Sg|seaborgium|6|7
+107|Bh|bohrium|7|7
+108|Hs|hassium|8|7
+109|Mt|meitnerium|9|7
+110|Ds|darmstadtium|10|7
+111|Rg|røntgenium|11|7
+112|Cn|copernicium|12|7
+113|Nh|nihonium|13|7
+114|Fl|flerovium|14|7
+115|Mc|moscovium|15|7
+116|Lv|livermorium|16|7
+117|Ts|tenness|17|7
+118|Og|oganesson|18|7`;
+const elements=raw.split('\n').map(line=>{const [z,symbol,name,group,period]=line.split('|');return{z,key:parseInt(z,10),symbol,name,group:+group,period:+period}}),fBlock=`57|La|lantan|6|57
+58|Ce|cerium|6|57
+59|Pr|praseodym|6|57
+60|Nd|neodym|6|57
+61|Pm|promethium|6|57
+62|Sm|samarium|6|57
+63|Eu|europium|6|57
+64|Gd|gadolinium|6|57
+65|Tb|terbium|6|57
+66|Dy|dysprosium|6|57
+67|Ho|holmium|6|57
+68|Er|erbium|6|57
+69|Tm|thulium|6|57
+70|Yb|ytterbium|6|57
+71|Lu|lutetium|6|57
+89|Ac|actinium|7|89
+90|Th|thorium|7|89
+91|Pa|protactinium|7|89
+92|U|uran|7|89
+93|Np|neptunium|7|89
+94|Pu|plutonium|7|89
+95|Am|americium|7|89
+96|Cm|curium|7|89
+97|Bk|berkelium|7|89
+98|Cf|californium|7|89
+99|Es|einsteinium|7|89
+100|Fm|fermium|7|89
+101|Md|mendelevium|7|89
+102|No|nobelium|7|89
+103|Lr|lawrencium|7|89`.split('\n').map(line=>{const [z,symbol,name,period,key]=line.split('|');return{z,key:+key,symbol,name,group:null,period:+period}}),searchable=elements.concat(fBlock),$=id=>document.getElementById(id),table=$('periodic');
+const massValues=`1.0080|4.0026|6.94|9.0122|10.81|12.011|14.007|15.999|18.998|20.180|22.990|24.305|26.982|28.085|30.974|32.06|35.45|39.95|39.098|40.078|44.956|47.867|50.942|51.996|54.938|55.845|58.933|58.693|63.546|65.38|69.723|72.630|74.922|78.971|79.904|83.798|85.468|87.62|88.906|91.222|92.906|95.95|[97]|101.07|102.91|106.42|107.87|112.41|114.82|118.71|121.76|127.60|126.90|131.29|132.91|137.33|138.91|140.12|140.91|144.24|[145]|150.36|151.96|157.25|158.93|162.50|164.93|167.26|168.93|173.05|174.97|178.49|180.95|183.84|186.21|190.23|192.22|195.08|196.97|200.59|204.38|207.2|208.98|[209]|[210]|[222]|[223]|[226]|[227]|232.04|231.04|238.03|[237]|[244]|[243]|[247]|[247]|[251]|[252]|[257]|[258]|[259]|[266]|[267]|[268]|[269]|[270]|[269]|[277]|[281]|[282]|[285]|[286]|[290]|[290]|[293]|[294]|[294]`.split('|');function massOf(el){return /^\d+$/.test(el.z)?massValues[+el.z-1]:null}
+function displayMass(mass){return mass.replace('.',',')}
+const discoveryYears=`1766|1895|1817|1798|1808||1772|1774|1886|1898|1807|1808|1825|1824|1669||1774|1894|1807|1808|1879|1791|1830|1797|1774||1739|1751|||1875|1886||1818|1826|1898|1861|1790|1789|1789|1801|1778|1937|1844|1803|1803||1817|1863|||1782|1811|1898|1860|1808|1839|1803|1885|1925|1945|1879|1901|1880|1843|1886|1878|1843|1879|1878|1907|1923|1802|1783|1925|1804|1804|1735|||1861|||1898|1940|1898|1939|1898|1899|1828|1917|1789|1940|1940|1945|1944|1949|1950|1952|1953|1955|1957|1961|1969|1970|1974|1976|1984|1982|1994|1994|1996|2015|1998|2003|2000|2010|2002`.split('|'),earlyDates=new Map([[6,'bce'],[16,'bce'],[26,'bce'],[29,'bce'],[30,'bce'],[33,300],[47,'bce'],[50,'bce'],[51,'bce'],[78,'bce'],[79,'bce'],[80,'bce'],[82,'bce'],[83,1500]]);function historyOf(el){if(!/^\d+$/.test(el.z))return{key:'h-varies',label:'Varierer i rekken',date:'Varierer i rekken'};const z=+el.z,value=earlyDates.has(z)?earlyDates.get(z):+discoveryYears[z-1];if(value==='bce')return{key:'h-bce',label:'Før vår tidsregning',date:'Kjent før vår tidsregning'};if(value<1600)return{key:'h-1',label:'1–1599',date:String(value)};if(value<1800)return{key:'h-1600',label:'1600–1799',date:String(value)};if(value<1850)return{key:'h-1800',label:'1800–1849',date:String(value)};if(value<1950)return{key:'h-1850',label:'1850–1949',date:String(value)};if(value<2000)return{key:'h-1950',label:'1950–1999',date:String(value)};return{key:'h-2000',label:'2000–i dag',date:String(value)}}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+const unknowns=new Set([109,110,111,116,117,118]),metalloids=new Set([5,14,32,33,51,52,84,85]),nonmetals=new Set([1,2,6,7,8,9,10,15,16,17,18,34,35,36,53,54,86]);function category(el){const z=parseInt(el.z,10);return unknowns.has(z)?['unknown','Ikke tilstrekkelig karakterisert']:metalloids.has(z)?['metalloid','Halvmetall']:nonmetals.has(z)?['nonmetal','Ikke-metall']:['metal','Metall']}
+const noStableIsotopes=new Set([43,61,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118]);function stabilityOf(el){if(!/^\d+$/.test(el.z))return{key:'stability-varies',label:'Varierer i rekken'};return noStableIsotopes.has(+el.z)?{key:'no-stable',label:'Ingen'}:{key:'stable',label:'Minst én'}}
+const corner=document.createElement('span');corner.className='axis';table.appendChild(corner);for(let g=1;g<=18;g++){const x=document.createElement('span');x.className='axis';x.dataset.group=g;x.textContent=g;x.style.gridColumn=g+1;table.appendChild(x)}for(let p=1;p<=7;p++){const x=document.createElement('span');x.className='axis';x.textContent=p;x.style.gridColumn=1;x.style.gridRow=p+1;table.appendChild(x)}
+let selectedId=null;function elementButton(el,column,row,seriesIndex=null){const b=document.createElement('button'),cat=category(el),history=historyOf(el),stability=stabilityOf(el),aggregate=el.symbol.includes('–'),mass=massOf(el);b.type='button';b.className=`element ${cat[0]} ${history.key} ${stability.key}${aggregate?' aggregate':''}`;b.style.gridColumn=column;b.style.gridRow=row;b.dataset.id=el.z;b.dataset.group=el.group??'';b.dataset.period=el.period;if(seriesIndex!==null)b.dataset.seriesIndex=seriesIndex;b.setAttribute('aria-pressed','false');const group=el.group==null?'':`, gruppe ${el.group}`,massText=mass?`, atommasse ${displayMass(mass)} u`:'';b.setAttribute('aria-label',`${cap(el.name)}, symbol ${el.symbol}, atomnummer ${el.z}${massText}${group}, periode ${el.period}, ${cat[1].toLocaleLowerCase('nb-NO')}, ${stability.label.toLocaleLowerCase('nb-NO')} stabil isotop, historisk periode ${history.label.toLocaleLowerCase('nb-NO')}`);b.innerHTML=`<span class="z">${el.z}</span><span class="sym">${el.symbol}</span>`;b.onclick=()=>selectedId===el.z?clearSelection():select(el,true);table.appendChild(b)}
+elements.forEach(el=>elementButton(el,el.group+1,el.period+1));['Lantanoider','Actinoider'].forEach((name,i)=>{const label=document.createElement('span');label.className='series-label';label.textContent=name;label.style.gridColumn='1 / 4';label.style.gridRow=10+i;table.appendChild(label)});fBlock.forEach((el,i)=>elementButton(el,(i%15)+4,10+Math.floor(i/15),i));
+let expanded=false;function applyTableLayout(){table.classList.toggle('expanded',expanded);$('page').classList.toggle('table-wide',expanded);document.querySelectorAll('.axis[data-group]').forEach(x=>{const g=+x.dataset.group;x.style.gridColumn=expanded&&g>=3?g+15:g+1});document.querySelectorAll('.element').forEach(b=>{const series=b.dataset.seriesIndex;b.hidden=expanded&&b.classList.contains('aggregate');if(series!==undefined){const i=+series;b.style.gridColumn=i%15+4;b.style.gridRow=expanded?+b.dataset.period+1:10+Math.floor(i/15)}else{const group=+b.dataset.group;b.style.gridColumn=expanded&&group>=3?group+15:group+1;b.style.gridRow=+b.dataset.period+1}});$('layoutToggle').textContent=expanded?'Vis vanlig oppsett':'Sett de to radene inn i tabellen';$('layoutToggle').setAttribute('aria-pressed',String(expanded));$('tableScroll').scrollLeft=0}
+$('layoutToggle').onclick=()=>{expanded=!expanded;applyTableLayout();$('message').className='message';$('message').textContent=expanded?'Nå står alle grunnstoffene i periode 6 og 7 på plass i hovedtabellen. Tabellen trenger 32 kolonner.':'Lantanoidene og actinoidene er flyttet under hovedtabellen for å spare bredde.'};
+let categoryFilter=null;document.querySelectorAll('[data-category]').forEach(button=>button.onclick=()=>{categoryFilter=categoryFilter===button.dataset.category?null:button.dataset.category;document.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category===categoryFilter)));document.querySelectorAll('.element').forEach(el=>el.classList.toggle('muted',categoryFilter!==null&&!el.classList.contains(categoryFilter)));$('message').className='message';$('message').textContent=categoryFilter?`${cap(button.textContent.trim())} er fremhevet. Velg kategorien igjen for å vise alle.`:'Alle typene vises.'});
+let colorView='type';document.querySelectorAll('[data-view]').forEach(button=>button.onclick=()=>{colorView=button.dataset.view;table.classList.toggle('history-view',colorView==='history');table.classList.toggle('stability-view',colorView==='stability');$('typeLegend').hidden=colorView!=='type';$('historyLegend').hidden=colorView!=='history';$('stabilityLegend').hidden=colorView!=='stability';document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===colorView)));categoryFilter=null;document.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed','false'));document.querySelectorAll('.element').forEach(el=>el.classList.remove('muted'));$('message').className='message';$('message').textContent=colorView==='history'?'Fargene viser historisk periode. Velg en periode for å fremheve den.':colorView==='stability'?'Fargene viser om grunnstoffet har minst én stabil isotop. Dette sier ikke om det finnes naturlig.':'Fargene viser forenklet stofftype.'});
+function clearSelection(){selectedId=null;document.querySelectorAll('.element').forEach(b=>b.setAttribute('aria-pressed','false'));$('symbol').textContent='—';$('symbol').classList.remove('aggregate-display');$('number').textContent='Ingen valgt';$('name').textContent='Velg et grunnstoff';['symbolFact','massFact','groupFact','periodFact','categoryFact','stabilityFact','historyFact','historyPeriodFact'].forEach(id=>$(id).textContent='—');$('message').className='message';$('message').textContent='Ingen grunnstoff er valgt. Velg i tabellen eller bruk søkefeltet.'}
+function select(el,focus){selectedId=el.z;const cat=category(el),history=historyOf(el),stability=stabilityOf(el),mass=massOf(el),aggregate=el.symbol.includes('–');document.querySelectorAll('.element').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.id===el.z)));$('symbol').textContent=el.symbol;$('symbol').classList.toggle('aggregate-display',aggregate);$('number').textContent=`Atomnummer ${el.z}`;$('name').textContent=cap(el.name);$('symbolFact').textContent=el.symbol;$('massFact').textContent=mass?`${displayMass(mass)} u`:'Varierer i rekken';$('groupFact').textContent=el.group??'ikke angitt';$('periodFact').textContent=el.period;$('categoryFact').textContent=cat[1];$('stabilityFact').textContent=stability.label;$('historyFact').textContent=history.date;$('historyPeriodFact').textContent=history.label;$('message').className='message';$('message').textContent=`Fant ${cap(el.name)} med ${el.symbol==='La–Lu'||el.symbol==='Ac–Lr'?'samlebetegnelsen':'symbolet'} ${el.symbol}.`;if(focus){const b=Array.from(document.querySelectorAll('.element')).find(x=>x.dataset.id===el.z&&!x.hidden);if(b)b.scrollIntoView({block:'nearest',inline:'nearest'})}}
+function find(q){const text=q.trim().toLocaleLowerCase('nb-NO');if(!text)return null;return searchable.find(el=>String(el.z)===text||el.symbol.toLocaleLowerCase('nb-NO')===text||el.name.toLocaleLowerCase('nb-NO')===text)}
+$('searchForm').onsubmit=e=>{e.preventDefault();const el=find($('query').value);if(el){select(el,true)}else{$('message').className='message bad';$('message').textContent='Fant ikke grunnstoffet. Prøv hele navnet, symbolet eller atomnummeret.'}};select(elements.find(el=>el.z==='8'),false);
+})();
+</script>
+</body></html>
