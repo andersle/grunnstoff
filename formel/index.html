@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tallet foran og senketallene</title>
+<style>
+:root{--g:#0b171c;--p:#12252c;--l:#1e3a44;--i:#e6eef0;--d:#7f9aa4;--a:#f0a868;--c:#5fb5c4;--unit:#35535d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--g);color:var(--i);font:15px/1.5 system-ui,"Segoe UI",sans-serif}
+.wrap{max-width:1080px;margin:auto;padding:30px 22px 44px}
+.eyebrow,.small{color:var(--d);font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+h1{font-size:clamp(24px,3.5vw,39px);font-weight:300;line-height:1.15;margin:8px 0}
+h1 em{font-style:normal}
+h1 .front-title{color:var(--a)}
+h1 .sub-title{color:var(--c)}
+.lede{max-width:72ch;color:var(--d)}
+.grid{display:grid;grid-template-columns:minmax(260px,320px) minmax(0,1fr);gap:16px;margin-top:22px}
+.panel{min-width:0;background:var(--p);border:1px solid var(--l);border-radius:14px;padding:18px}
+label{display:block;color:var(--d);font-size:12px;margin-bottom:6px}
+select,input[type=range]{width:100%}
+select{background:var(--g);border:1px solid var(--l);border-radius:8px;color:var(--i);font:inherit;padding:10px}
+input[type=range]{accent-color:var(--a)}
+.control+.control{margin-top:18px}
+.range-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+output{color:var(--a);font-size:21px;font-variant-numeric:tabular-nums}
+.formula{display:flex;align-items:baseline;gap:.18em;min-height:82px;margin:19px 0 5px;font-size:clamp(42px,7vw,64px);font-weight:350;line-height:1;color:var(--i)}
+.coefficient{color:var(--a)}
+.formula sub{color:var(--c);font-size:.52em;vertical-align:-.35em}
+.key{display:grid;gap:8px;margin-top:18px}
+.key div{border-left:3px solid var(--l);padding-left:10px;color:var(--d);font-size:13px}
+.key .front{border-color:var(--a)}
+.key .sub{border-color:var(--c)}
+.key b{color:var(--i);font-weight:600}
+.particles{display:flex;gap:28px 12px;flex-wrap:wrap;min-height:188px;align-content:flex-start;margin-top:11px}
+.unit{display:flex;justify-content:center;align-items:center;width:104px;min-height:84px;border:1px dashed var(--unit);border-radius:12px;position:relative}
+.unit::after{content:"ett molekyl";position:absolute;bottom:-19px;color:var(--d);font-size:9px;white-space:nowrap}
+.particles.formula-units .unit::after{content:"én formelenhet"}
+.particle-svg{display:block;width:100%;height:82px;overflow:visible}
+.bond{stroke:#9bb0b7;stroke-width:2;stroke-linecap:round}
+.atom-circle{stroke:#0b171c;stroke-width:1.5}
+.atom-label{fill:#0b171c;font-size:10px;font-weight:750;text-anchor:middle;dominant-baseline:central}
+.ion-charge{fill:var(--i);font-size:9px;font-weight:700;text-anchor:middle}
+.equations{display:grid;gap:8px;margin-top:31px}
+.equation{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;background:var(--g);border-radius:9px;padding:9px 12px;font-variant-numeric:tabular-nums}
+.equation .sym{font-weight:700}
+.equation .work{color:var(--d)}
+.equation strong{color:var(--a);font-size:19px;font-weight:650}
+.bridge{margin-top:16px;padding:18px;border:1px solid var(--l);border-radius:14px;background:linear-gradient(135deg,var(--p),#102129)}
+.bridge h2{font-size:clamp(19px,3vw,24px);font-weight:400;margin:2px 0 7px}
+.bridge p{color:var(--d);margin:5px 0}
+.mol-controls{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin-top:16px}
+.mol-control{min-width:0}
+.mol-control input,.mol-control select{width:100%;background:var(--g);border:1px solid var(--l);border-radius:8px;color:var(--i);font:inherit;padding:10px}
+.mol-control input:focus,.mol-control select:focus{outline:2px solid var(--c);outline-offset:1px}
+.ratio{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:12px;align-items:stretch;margin-top:16px}
+.ratio-card{display:flex;flex-direction:column;justify-content:center;min-height:92px;padding:13px 15px;background:var(--g);border:1px solid var(--l);border-radius:10px}
+.ratio-card span{color:var(--d);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.ratio-card strong{margin-top:5px;color:var(--i);font-size:clamp(15px,2.4vw,19px);font-weight:550}
+.ratio-card:last-child{border-color:#416b76}
+.same{align-self:center;color:var(--c);font-size:12px;text-align:center;line-height:1.25}
+.calc-label{margin-top:17px!important;color:var(--i)!important;font-size:12px;font-weight:600}
+.mol-equation{display:flex;align-items:center;gap:.45em;flex-wrap:wrap;margin-top:7px;padding:14px 16px;border-left:3px solid var(--a);background:var(--g);font-size:clamp(15px,2.5vw,19px);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.mol-equation strong{color:var(--a)}
+.fraction{display:inline-grid;text-align:center;line-height:1.3;vertical-align:middle}
+.fraction span:first-child{padding:0 6px 3px;border-bottom:1px solid var(--i)}
+.fraction span:last-child{padding:3px 6px 0}
+.cancel{color:var(--c);text-decoration:line-through;text-decoration-thickness:1px}
+.why{color:var(--i)!important;font-size:13px}
+footer{margin-top:22px;border-top:1px solid var(--l);padding-top:14px;color:var(--d);font-size:12px}
+footer b{color:#abc0c7;font-weight:600}
+@media(max-width:700px){.wrap{padding:19px 14px 34px}.grid{grid-template-columns:1fr}.particles{min-height:0}.unit{width:96px}.bridge{padding:15px}.mol-controls,.ratio{grid-template-columns:1fr}.same{padding:0}.same::after{content:" ↓"}}
+@media(max-width:390px){.unit{width:88px}.equation{grid-template-columns:34px 1fr auto;padding-inline:9px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="eyebrow">Kapittel 3: Kjemiske formler</p>
+  <h1>Hva gjør <em class="front-title">tallet foran</em>, og hva gjør <em class="sub-title">senketallet</em>?</h1>
+  <p class="lede">Endre tallet foran formelen. Følg både antallet molekyler og atomregnskapet. Sammenlign deretter med senketallene, som blir stående.</p>
+
+  <div class="grid">
+    <section class="panel" aria-labelledby="controls-title">
+      <p class="small" id="controls-title">Velg og endre</p>
+      <div class="control">
+        <label for="formula">Eksempel</label>
+        <select id="formula">
+          <option value="CCl2F2">Diklordifluormetan (CCl₂F₂)</option>
+          <option value="H2O">Vann (H₂O)</option>
+          <option value="CO2">Karbondioksid (CO₂)</option>
+          <option value="NH3">Ammoniakk (NH₃)</option>
+          <option value="CaCl2">Kalsiumklorid (CaCl₂)</option>
+          <option value="Al2O3">Aluminiumoksid (Al₂O₃)</option>
+        </select>
+      </div>
+      <div class="control">
+        <div class="range-head"><label for="units">Tallet foran formelen</label><output id="unitsOut" for="units">2</output></div>
+        <input id="units" type="range" min="1" max="10" value="2" aria-describedby="front-help">
+      </div>
+      <div class="formula" id="pretty" aria-live="polite"></div>
+      <div class="key">
+        <div class="front" id="front-help"><b>Tall foran (oransje):</b> ganger hele formelen og gir flere molekyler eller formelenheter.</div>
+        <div class="sub"><b>Senketall (blå):</b> viser antall atomer av denne typen i hver enkelt partikkel. Mangler senketallet, betyr det 1.</div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="particles-title">
+      <p class="small" id="particles-title">Samme regnskap vist med partikler</p>
+      <div class="particles" id="particles"></div>
+      <div class="equations" id="equations" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <section class="bridge" aria-labelledby="mol-title">
+    <p class="small">Hvorfor kan vi gange med senketallet?</p>
+    <h2 id="mol-title">Fra én partikkel til ett mol partikler</h2>
+    <div class="mol-controls">
+      <div class="mol-control">
+        <label for="molAmount" id="molAmountLabel">Stoffmengde av forbindelsen (mol)</label>
+        <input id="molAmount" type="number" min="0" step="any" value="38.5">
+      </div>
+      <div class="mol-control">
+        <label for="targetAtom">Finn stoffmengden av</label>
+        <select id="targetAtom"></select>
+      </div>
+    </div>
+    <p id="molIntro"></p>
+    <div class="ratio" id="ratio" aria-live="polite">
+      <div class="ratio-card"><span>Formelen forteller</span><strong id="particleRatio"></strong></div>
+      <div class="same" aria-hidden="true">samme<br>forhold</div>
+      <div class="ratio-card"><span>Når vi teller i mol</span><strong id="molRatio"></strong></div>
+    </div>
+    <p class="calc-label">Bruk forholdet som omregningsfaktor:</p>
+    <div class="mol-equation" id="molEquation"></div>
+    <p class="why" id="molWhy"></p>
+  </section>
+
+  <footer><b>Om modellen:</b> Strekene viser hvilke atomer som er bundet sammen, men er ikke fysiske staver. Plassering, vinkler og størrelser er skjematiske. For ioneforbindelser vises ioner og ladninger uten bindingsstreker; rammen viser bare ioneforholdet i én formelenhet, ikke en avgrenset partikkel.</footer>
+</main>
+<script>
+(()=>{
+  'use strict';
+  const $=id=>document.getElementById(id);
+  const data={
+    CCl2F2:{tokens:[['C',1],['Cl',2],['F',2]],kind:'molekyl',sample:'38,5',target:'Cl'},
+    H2O:{tokens:[['H',2],['O',1]],kind:'molekyl',sample:'2,0',target:'H'},
+    CO2:{tokens:[['C',1],['O',2]],kind:'molekyl',sample:'4,0',target:'O'},
+    NH3:{tokens:[['N',1],['H',3]],kind:'molekyl',sample:'1,5',target:'H'},
+    CaCl2:{tokens:[['Ca',1],['Cl',2]],kind:'formelenhet',sample:'3,0',target:'Cl'},
+    Al2O3:{tokens:[['Al',2],['O',3]],kind:'formelenhet',sample:'2,0',target:'O'}
+  };
+  const colors={H:'#dce7ea',O:'#e2725b',C:'#9aaeb5',N:'#5fb5c4',Ca:'#f0a868',Cl:'#74c69d',Al:'#abc0c7',F:'#a8d89e'};
+  const subDigits={'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉'};
+  const sub=n=>String(n).split('').map(d=>subDigits[d]).join('');
+  const formulaText=item=>item.tokens.map(([sym,count])=>sym+(count>1?sub(count):'')).join('');
+  const formulaNodes=item=>item.tokens.flatMap(([sym,count])=>{
+    const symbol=document.createTextNode(sym);
+    if(count===1)return [symbol];
+    const lowered=document.createElement('sub');lowered.textContent=count;
+    return [symbol,lowered];
+  });
+  const nb=(x,decimals=1)=>x.toLocaleString('nb-NO',{minimumFractionDigits:decimals,maximumFractionDigits:Math.max(decimals,8)});
+  const NS='http://www.w3.org/2000/svg';
+  function node(type,attrs,parent){
+    const n=document.createElementNS(NS,type);
+    Object.entries(attrs).forEach(([key,value])=>n.setAttribute(key,value));
+    if(parent)parent.appendChild(n);
+    return n;
+  }
+  function bond(svg,a,b,order=1){
+    const dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy),ox=-dy/length*2,oy=dx/length*2;
+    const offsets=order===2?[-1,1]:[0];
+    offsets.forEach(side=>node('line',{x1:a[0]+ox*side,y1:a[1]+oy*side,x2:b[0]+ox*side,y2:b[1]+oy*side,class:'bond'},svg));
+  }
+  function atom(svg,symbol,x,y,r=13,charge=''){
+    node('circle',{cx:x,cy:y,r,fill:colors[symbol],class:'atom-circle'},svg);
+    const label=node('text',{x,y,class:'atom-label'},svg);label.textContent=symbol;
+    if(charge){const c=node('text',{x:x+r-1,y:y-r+2,class:'ion-charge'},svg);c.textContent=charge;}
+  }
+  function particleGraphic(key){
+    const svg=node('svg',{viewBox:'0 0 104 82',class:'particle-svg','aria-hidden':'true'});
+    if(key==='CCl2F2'){
+      const center=[52,41],outer=[['Cl',18,18],['Cl',86,18],['F',18,65],['F',86,65]];
+      outer.forEach(([,x,y])=>bond(svg,center,[x,y]));
+      atom(svg,'C',...center,12);outer.forEach(([sym,x,y])=>atom(svg,sym,x,y,13));
+    }else if(key==='H2O'){
+      bond(svg,[52,50],[23,20]);bond(svg,[52,50],[81,20]);
+      atom(svg,'O',52,50,14);atom(svg,'H',23,20,12);atom(svg,'H',81,20,12);
+    }else if(key==='NH3'){
+      const center=[52,37],outer=[[20,18],[84,18],[52,70]];
+      outer.forEach(p=>bond(svg,center,p));atom(svg,'N',...center,14);
+      outer.forEach(([x,y])=>atom(svg,'H',x,y,11));
+    }else if(key==='CO2'){
+      bond(svg,[17,41],[52,41],2);bond(svg,[52,41],[87,41],2);
+      atom(svg,'O',17,41,13);atom(svg,'C',52,41,13);atom(svg,'O',87,41,13);
+    }else if(key==='CaCl2'){
+      atom(svg,'Cl',17,43,13,'−');atom(svg,'Ca',52,39,14,'2+');atom(svg,'Cl',87,43,13,'−');
+    }else{
+      atom(svg,'Al',34,24,12,'3+');atom(svg,'Al',70,24,12,'3+');
+      atom(svg,'O',17,64,12,'2−');atom(svg,'O',52,60,12,'2−');atom(svg,'O',87,64,12,'2−');
+    }
+    return svg;
+  }
+
+  function drawMol(item,formula){
+    const target=$('targetAtom').value;
+    const targetCount=item.tokens.find(([sym])=>sym===target)[1];
+    const rawAmount=$('molAmount').value,amount=Number(rawAmount),valid=rawAmount!==''&&Number.isFinite(amount)&&amount>=0;
+    const particleArticle=item.kind==='molekyl'?'hvert':'hver';
+    const oneParticle=item.kind==='molekyl'?'Ett molekyl':'Én formelenhet';
+    $('molAmountLabel').textContent=`Stoffmengde av ${formula} (mol)`;
+    $('molIntro').textContent=`Senketallet ${targetCount} sier at ${particleArticle} ${item.kind} ${formula} inneholder ${targetCount} ${target}-atom${targetCount===1?'':'er'}. Mol er en måte å telle svært mange partikler på, så atomforholdet blir det samme.`;
+    $('particleRatio').textContent=`1 ${item.kind} ${formula} → ${targetCount} ${target}-atom${targetCount===1?'':'er'}`;
+    $('molRatio').textContent=`1 mol ${formula} → ${targetCount} mol ${target}-atomer`;
+    $('ratio').setAttribute('aria-label',`${oneParticle} ${formula} gir ${targetCount} ${target}-atomer. Derfor gir ett mol ${formula} ${targetCount} mol ${target}-atomer.`);
+    if(!valid){
+      $('molEquation').textContent='Skriv inn en stoffmengde som er null eller større.';
+      $('molEquation').removeAttribute('aria-label');
+      $('molWhy').textContent='';
+      return;
+    }
+    const decimals=Math.min(8,(rawAmount.split('.')[1]||'').length);
+    const shownAmount=amount.toLocaleString('nb-NO',{minimumFractionDigits:decimals,maximumFractionDigits:8}),answer=amount*targetCount,shownAnswer=nb(answer,decimals);
+    $('molEquation').innerHTML=`<span>${shownAmount} <span class="cancel">mol ${formula}</span></span><span>×</span><span class="fraction"><span>${targetCount} mol ${target}-atomer</span><span>1 <span class="cancel">mol ${formula}</span></span></span><span>=</span><strong>${shownAnswer} mol ${target}-atomer</strong>`;
+    $('molEquation').setAttribute('aria-label',`${shownAmount} mol ${formula} ganger ${targetCount} mol ${target}-atomer per ett mol ${formula} er lik ${shownAnswer} mol ${target}-atomer.`);
+    $('molWhy').textContent=`Enheten mol ${formula} finnes både før og under brøkstreken og forkortes bort. Da står vi igjen med mol ${target}-atomer.`;
+  }
+
+  function draw(resetMol=false){
+    const key=$('formula').value,item=data[key],n=+$('units').value,formula=formulaText(item);
+    $('unitsOut').value=n;
+    const coefficient=document.createElement('span');
+    coefficient.className='coefficient';coefficient.textContent=n;
+    $('pretty').replaceChildren(coefficient,document.createTextNode(' '),...formulaNodes(item));
+    $('pretty').setAttribute('aria-label',`${n} ganger ${formula}`);
+
+    const units=Array.from({length:n},()=>{
+      const unit=document.createElement('div');unit.className='unit';
+      unit.setAttribute('aria-label',`${item.kind==='molekyl'?'Ett molekyl':'Én formelenhet'} ${formula}`);
+      unit.appendChild(particleGraphic(key));
+      return unit;
+    });
+    $('particles').classList.toggle('formula-units',item.kind==='formelenhet');
+    $('particles').replaceChildren(...units);
+    $('particles').setAttribute('aria-label',`${n} ${item.kind==='molekyl'?(n===1?'molekyl':'molekyler'):(n===1?'formelenhet':'formelenheter')} med formelen ${formula}`);
+
+    $('equations').replaceChildren(...item.tokens.map(([sym,count])=>{
+      const row=document.createElement('div');row.className='equation';
+      row.innerHTML=`<span class="sym">${sym}</span><span class="work">${n} × ${count} per ${item.kind}</span><strong>= ${n*count}</strong>`;
+      return row;
+    }));
+
+    if(resetMol){
+      $('molAmount').value=item.sample.replace(',','.');
+      $('targetAtom').replaceChildren(...item.tokens.map(([sym])=>{
+        const option=document.createElement('option');option.value=sym;option.textContent=`${sym}-atomer`;return option;
+      }));
+      $('targetAtom').value=item.target;
+    }
+    drawMol(item,formula);
+  }
+  $('formula').addEventListener('change',()=>draw(true));
+  $('units').addEventListener('input',()=>draw(false));
+  $('molAmount').addEventListener('input',()=>drawMol(data[$('formula').value],formulaText(data[$('formula').value])));
+  $('targetAtom').addEventListener('change',()=>drawMol(data[$('formula').value],formulaText(data[$('formula').value])));
+  draw(true);
+})();
+</script>
+</body>
+</html>
