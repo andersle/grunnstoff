@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Balanser en reaksjonslikning</title>
+<style>
+:root{--g:#0b171c;--p:#12252c;--l:#1e3a44;--i:#e6eef0;--d:#7f9aa4;--a:#f0a868;--c:#5fb5c4;--ok:#7bc47f;--bad:#e2725b}*{box-sizing:border-box}body{margin:0;background:var(--g);color:var(--i);font:15px/1.5 system-ui,"Segoe UI",sans-serif}.wrap{max-width:1100px;margin:auto;padding:30px 22px 44px}.eyebrow,.small{color:var(--d);font-size:11px;letter-spacing:.16em;text-transform:uppercase}h1{font-size:clamp(24px,3.5vw,39px);font-weight:300;line-height:1.15;margin:8px 0}h1 em{color:var(--a);font-style:normal}.lede{max-width:74ch;color:var(--d)}label{display:block;margin-bottom:5px;color:var(--d);font-size:12px}.choose{width:min(100%,350px);margin-top:21px}select,button{font:inherit}.choose select{width:100%;padding:10px 12px;border:1px solid var(--l);border-radius:9px;background:var(--p);color:var(--i)}.panel{margin-top:14px;background:var(--p);border:1px solid var(--l);border-radius:14px;overflow:hidden}.equation{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;min-height:150px;padding:18px}.species{display:inline-flex;align-items:center;white-space:nowrap;font-size:clamp(25px,5vw,42px);font-weight:350}.coefficient-control{display:inline-grid;grid-template-rows:22px 30px 22px;place-items:center;width:34px;margin-right:4px;border:1px solid var(--l);border-radius:9px;background:var(--g);overflow:hidden}.coef-step{display:grid;place-items:center;width:100%;height:100%;padding:0;border:0;border-radius:0;background:transparent;color:var(--d);font-size:12px;line-height:1;cursor:pointer}.coef-step:hover,.coef-step:focus-visible{background:#1b343d;color:var(--a);outline:2px solid var(--a);outline-offset:-2px}.coefficient{color:var(--a);font:650 18px/1 system-ui;font-variant-numeric:tabular-nums}.formula sub{color:var(--c);font-size:.56em}.state{margin-left:.14em;color:var(--d);font-size:.52em}.operator{color:var(--d);font-size:clamp(23px,4vw,36px);font-weight:300}.arrow{color:var(--a)}.instruction{margin:0;padding:0 18px 17px;color:var(--d);font-size:13px;text-align:center}.ledger{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--l)}.side{min-width:0;padding:16px 18px}.side+.side{border-left:1px solid var(--l)}.side h2{margin:0 0 12px;color:var(--d);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase}.particles{display:flex;gap:6px;flex-wrap:wrap;min-height:34px}.particle{padding:4px 7px;border:1px solid #31515b;border-radius:7px;background:var(--g);font-size:13px}.atom-account{padding:16px 18px;border-top:1px solid var(--l)}.atom-account h2{margin:0 0 10px;color:var(--d);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase}.atom-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}.atom-table th,.atom-table td{padding:9px 10px;border-top:1px solid #19343d;text-align:center}.atom-table th{color:var(--d);font-size:11px;font-weight:500}.atom-table th:first-child,.atom-table td:first-child{text-align:left}.atom-table td{font-size:17px}.atom-table .status{font-weight:700}.atom-table tr.match .status{color:var(--ok)}.atom-table tr.mismatch .status{color:var(--bad)}.actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:14px 18px;border-top:1px solid var(--l)}button{padding:9px 15px;border:1px solid var(--l);border-radius:999px;background:transparent;color:var(--i);cursor:pointer}button:hover,button:focus-visible{border-color:var(--a);outline:2px solid transparent}button.primary{border-color:var(--a);background:var(--a);color:var(--g);font-weight:650}.feedback{flex:1;min-width:220px;margin:0;color:var(--d);font-size:13px}.feedback.ok{color:var(--ok)}.feedback.bad{color:var(--bad)}.symbols{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:16px}.symbol-card{min-width:0;padding:14px;background:var(--p);border:1px solid var(--l);border-radius:12px}.mark{min-height:38px;color:var(--a);font-size:27px;font-weight:500}.mark sub{color:var(--c);font-size:.55em}.symbol-card h2{margin:3px 0;font-size:13px;font-weight:650}.symbol-card p{margin:0;color:var(--d);font-size:12px;line-height:1.45}footer{margin-top:22px;padding-top:14px;border-top:1px solid var(--l);color:var(--d);font-size:12px}footer b{color:#abc0c7;font-weight:600}@media(max-width:760px){.wrap{padding:19px 14px 34px}.lede{display:none}.ledger{grid-template-columns:1fr}.side+.side{border-left:0;border-top:1px solid var(--l)}.symbols{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:440px){.equation{gap:7px;padding-inline:10px}.species{font-size:24px}.symbols{grid-template-columns:1fr}.feedback{min-width:100%}.atom-table th,.atom-table td{padding-inline:5px}}
+</style>
+<style>
+.atom-table th span{display:block;margin-bottom:2px;font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
+.atom-table .reactant-head{color:var(--c);border-left:1px solid #294a54}
+.atom-table .product-head{position:relative;color:var(--a);border-left:1px solid #604c38}
+.atom-table .product-head::before{content:"→";position:absolute;left:-10px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--p);color:var(--i);font-size:13px}
+.atom-table .reactant-count{border-left:1px solid #294a54;background:rgba(95,181,196,.07);color:var(--c);font-weight:700}
+.atom-table .product-count{border-left:1px solid #604c38;background:rgba(240,168,104,.07);color:var(--a);font-weight:700}
+@media(min-width:1100px){.wrap{max-width:1400px}.equation{flex-wrap:nowrap}.species{font-size:clamp(25px,3vw,38px)}}
+@media(max-width:760px){.lede{display:block}}
+</style>
+</head>
+<body><main class="wrap">
+<p class="eyebrow">Kapittel 4: Reaksjonslikninger</p>
+<h1>Kan du få like mange atomer på <em>begge sider?</em></h1>
+<p class="lede">Endre bare tallene foran formlene. Atomene kan omgrupperes i en kjemisk reaksjon, men ingen atomtyper kan oppstå eller forsvinne.</p>
+<div class="choose"><label for="reaction">Velg reaksjon</label><select id="reaction"></select></div>
+<section class="panel" aria-label="Reaksjonslikning som skal balanseres">
+  <div class="equation" id="equation"></div>
+  <p class="instruction">Koeffisienten 1 vises for at den skal kunne endres. Vanligvis skriver vi ikke 1 foran en formel.</p>
+  <div class="ledger">
+    <section class="side"><h2>Reaktanter (før pilen)</h2><div class="particles" id="leftParticles"></div></section>
+    <section class="side"><h2>Produkter (etter pilen)</h2><div class="particles" id="rightParticles"></div></section>
+  </div>
+  <section class="atom-account" aria-labelledby="account-title"><h2 id="account-title">Atomregnskap</h2><table class="atom-table"><thead><tr><th>Grunnstoff</th><th class="reactant-head">Reaktanter (før pilen)</th><th class="product-head">Produkter (etter pilen)</th><th>Like mange?</th></tr></thead><tbody id="atomRows"></tbody></table></section>
+  <div class="actions"><button class="primary" id="check">Kontroller</button><button id="reset">Nullstill</button><p class="feedback" id="feedback" aria-live="polite"></p></div>
+</section>
+<section class="symbols" aria-label="Symboler i reaksjonslikninger">
+  <article class="symbol-card"><div class="mark">2 H₂O</div><h2>Koeffisient</h2><p>Tallet foran ganger hele formelen. Det er disse tallene vi endrer når vi balanserer.</p></article>
+  <article class="symbol-card"><div class="mark">H<sub>2</sub>O</div><h2>Senketall</h2><p>Viser sammensetningen av én partikkel. Senketallene skal ikke endres ved balansering.</p></article>
+  <article class="symbol-card"><div class="mark">+</div><h2>Plusstegn</h2><p>Skiller ulike stoffer på samme side av reaksjonslikningen.</p></article>
+  <article class="symbol-card"><div class="mark">→</div><h2>Reaksjonspil</h2><p>Viser retningen fra reaktanter til produkter og kan leses «danner».</p></article>
+  <article class="symbol-card"><div class="mark">(s) (l) (g) (aq)</div><h2>Tilstandsmerking</h2><p>Fast stoff, væske, gass og stoff løst i vann. Merkingen påvirker ikke atomtellingen.</p></article>
+</section>
+<footer><b>Om modellen:</b> De gjentatte boksene med kjemiske formler viser hvor mange partikler koeffisientene representerer. De viser ikke molekylform eller hvordan reaksjonen skjer. En balansert reaksjonslikning bevarer antall atomer av hvert grunnstoff og samlet elektrisk ladning.</footer>
+</main>
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const reactions=[
+ {name:'Dannelse av vann',left:[['H2','g'],['O2','g']],right:[['H2O','l']]},
+ {name:'Dannelse av ammoniakk',left:[['N2','g'],['H2','g']],right:[['NH3','g']]},
+ {name:'Forbrenning av metan',left:[['CH4','g'],['O2','g']],right:[['CO2','g'],['H2O','g']]},
+ {name:'Forbrenning av propan',left:[['C3H8','g'],['O2','g']],right:[['CO2','g'],['H2O','g']]},
+ {name:'Utfelling av bariumsulfat',left:[['Fe2(SO4)3','aq'],['Ba(NO3)2','aq']],right:[['Fe(NO3)3','aq'],['BaSO4','s']]},
+ {name:'Dannelse av jern(III)oksid',left:[['Fe','s'],['O2','g']],right:[['Fe2O3','s']]}
+];
+const subs={'0':'₀','1':'₁','2':'₂','3':'₃','4':'₄','5':'₅','6':'₆','7':'₇','8':'₈','9':'₉'};
+const pretty=f=>f.replace(/\d/g,d=>subs[d]);
+function atomMap(formula){
+ let index=0;
+ function number(){let digits='';while(/\d/.test(formula[index]||'')){digits+=formula[index];index++}return Number(digits)||1}
+ function group(){
+  const out={};
+  function add(symbol,count){out[symbol]=(out[symbol]||0)+count}
+  while(index<formula.length&&formula[index]!==')'){
+   if(formula[index]==='('){index++;const inner=group();index++;const multiplier=number();Object.entries(inner).forEach(entry=>add(entry[0],entry[1]*multiplier));continue}
+   let symbol=formula[index++];if(/[a-z]/.test(formula[index]||''))symbol+=formula[index++];add(symbol,number())
+  }
+  return out
+ }
+ return group()
+}
+let coefficients=[];
+function allSpecies(r){return r.left.concat(r.right)}
+function op(text,arrow){const x=document.createElement('span');x.className='operator'+(arrow?' arrow':'');x.textContent=text;x.setAttribute('aria-hidden','true');return x}
+function species(formula,state,index){
+ const wrap=document.createElement('span');wrap.className='species';
+ const control=document.createElement('span');control.className='coefficient-control';control.setAttribute('role','group');control.setAttribute('aria-label','Koeffisient foran '+pretty(formula));
+ const up=document.createElement('button');up.type='button';up.className='coef-step';up.textContent='▲';up.setAttribute('aria-label','Øk koeffisienten foran '+pretty(formula));
+ const value=document.createElement('output');value.className='coefficient';value.textContent=coefficients[index];value.setAttribute('aria-live','polite');
+ const down=document.createElement('button');down.type='button';down.className='coef-step';down.textContent='▼';down.setAttribute('aria-label','Reduser koeffisienten foran '+pretty(formula));
+ function change(delta){coefficients[index]=Math.max(1,Math.min(12,coefficients[index]+delta));value.textContent=coefficients[index];clearFeedback();renderCounts()}
+ up.addEventListener('click',()=>change(1));down.addEventListener('click',()=>change(-1));control.append(up,value,down);
+ const f=document.createElement('span');f.className='formula';f.textContent=pretty(formula);
+ const st=document.createElement('span');st.className='state';st.textContent='('+state+')';
+ wrap.append(control,f,st);return wrap
+}
+function sideCounts(list,offset){const out={};list.forEach((item,i)=>Object.entries(atomMap(item[0])).forEach(entry=>{out[entry[0]]=(out[entry[0]]||0)+entry[1]*coefficients[offset+i]}));return out}
+function current(){const r=reactions[+$('reaction').value],left=sideCounts(r.left,0),right=sideCounts(r.right,r.left.length);return{r,left,right,elements:[...new Set(Object.keys(left).concat(Object.keys(right)))]}}
+function chip(formula){const x=document.createElement('span');x.className='particle';x.textContent=pretty(formula);return x}
+function fillParticles(id,list,offset){const nodes=[];list.forEach((item,i)=>{for(let n=0;n<coefficients[offset+i];n++)nodes.push(chip(item[0]))});$(id).replaceChildren(...nodes)}
+function atomRow(symbol,left,right){const row=document.createElement('tr'),same=left===right;row.className=same?'match':'mismatch';const element=document.createElement('td');element.textContent=symbol;const before=document.createElement('td');before.className='reactant-count';before.textContent=left;const after=document.createElement('td');after.className='product-count';after.textContent=right;row.append(element,before,after);const status=document.createElement('td');status.className='status';status.textContent=same?'Ja':'Nei';status.setAttribute('aria-label',same?'Like mange':'Ikke like mange');row.appendChild(status);return row}
+function renderCounts(){const c=current();fillParticles('leftParticles',c.r.left,0);fillParticles('rightParticles',c.r.right,c.r.left.length);$('atomRows').replaceChildren(...c.elements.map(e=>atomRow(e,c.left[e]||0,c.right[e]||0)))}
+function clearFeedback(){$('feedback').textContent='';$('feedback').className='feedback'}
+function renderEquation(){const r=reactions[+$('reaction').value],nodes=[];r.left.forEach((item,i)=>{if(i)nodes.push(op('+',false));nodes.push(species(item[0],item[1],i))});nodes.push(op('→',true));r.right.forEach((item,i)=>{if(i)nodes.push(op('+',false));nodes.push(species(item[0],item[1],r.left.length+i))});$('equation').replaceChildren(...nodes);renderCounts()}
+function reset(){coefficients=Array(allSpecies(reactions[+$('reaction').value]).length).fill(1);clearFeedback();renderEquation()}
+reactions.forEach((r,i)=>{const option=document.createElement('option');option.value=i;option.textContent=r.name;$('reaction').appendChild(option)});
+$('reaction').addEventListener('change',reset);$('reset').addEventListener('click',reset);
+$('check').addEventListener('click',()=>{const c=current(),wrong=c.elements.filter(e=>(c.left[e]||0)!==(c.right[e]||0));if(!wrong.length){$('feedback').textContent='Balansert: Hvert grunnstoff har like mange atomer på begge sider.';$('feedback').className='feedback ok'}else{$('feedback').textContent='Ikke balansert ennå. Se på '+wrong.join(' og ')+' i atomregnskapet.';$('feedback').className='feedback bad'}});
+reset();
+})();
+</script></body></html>
